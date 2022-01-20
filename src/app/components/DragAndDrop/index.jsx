@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
-import DraggableElement from './DraggableElement';
+import DraggableElement from './draggableElement';
 import {useTodo} from './hooks';
 
 const DragDropContextContainer = styled.div`
@@ -22,12 +22,12 @@ const ListGrid = styled.div`
 
 function DragList(props) {
  
-  const {onDragEnd ,lists, elements, onBeforeCapture, onBeforeDragStart, onDragStart, onDragUpdate} = useTodo(props);
+  const {onDragEnd ,lists, elements } = useTodo(props);
 
   
   return (  
     <DragDropContextContainer>
-      <DragDropContext onDragEnd={onDragEnd}  onDragStart={onDragStart} >
+      <DragDropContext onDragEnd={onDragEnd}  >
         <ListGrid>
           {lists.map((listKey) => (
             <DraggableElement  

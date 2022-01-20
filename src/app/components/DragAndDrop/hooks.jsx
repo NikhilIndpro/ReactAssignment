@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setTodos, setInprogress, setDone } from './actions';
-import { removeFromList, addToList } from './DragDropUtils';
+import { removeFromList, addToList } from './dragdropUtils';
 
 const TODO = 'todo';
 const IN_PROGRESS = 'inProgress';
@@ -46,6 +46,8 @@ export const useTodo = props => {
     console.log(result);
 
     const listCopy = { ...elements };
+    
+    // removeFromList will provide the removed elements and updated list
 
     const sourceList = listCopy[result.source.droppableId];
 
@@ -54,16 +56,12 @@ export const useTodo = props => {
       result.source.index,
     );
 
-    const getSource = listCopy[result.source.droppableId];
-
-    const setUpdatedSource = getSource.filter(e => e.id !== removedElement.id);
-
+    // Adding updated list to column with removed element
     const sourceId = result.source.droppableId;
 
-    sourceUpdate(sourceId, dispatch, setUpdatedSource);
+    sourceUpdate(sourceId, dispatch, newSourceList);
 
-    listCopy[result.source.droppableId] = newSourceList;
-
+     //Adding removed element to destination column with index 
     const destinationList  = listCopy[result.destination.droppableId];
 
     listCopy[result.destination.droppableId] = addToList(
@@ -72,11 +70,11 @@ export const useTodo = props => {
       removedElement,
     );
 
+    //Update destinationa list with removed element 
     const destinationId = result.destination.droppableId;
 
-    updateDestination(destinationId, dispatch, listCopy);
+    destinationUpdate(destinationId, dispatch, listCopy);
 
-    console.log('listCopy', listCopy);
   };
 
   return {
@@ -86,7 +84,7 @@ export const useTodo = props => {
   };
 };
 
-function updateDestination(id, dispatch, listCopy) {
+function destinationUpdate(id, dispatch, listCopy) {
   if (id === TODO) {
     dispatch(setTodos(listCopy.todo));
   } else if (id === IN_PROGRESS) {

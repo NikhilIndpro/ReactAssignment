@@ -11,10 +11,18 @@ import DragAndDrop from 'app/components/DragAndDrop';
 export function HomePage() {
   const injectorkey = 'homepage';
 
+  /*
+     we are using the redux-injectors to bind saga to store,
+     To run root sagas we need to bind them using useInjectReducer and useInjectSaga
+  */
+
   useInjectReducer({ key: injectorkey, reducer });
   useInjectSaga({ key: injectorkey, saga });
 
+  //  Inside useData hooks all the local state and function are define
+
   const { list } = useData();
+
   return (
     <>
       <Helmet>

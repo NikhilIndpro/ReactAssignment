@@ -8,11 +8,15 @@ import {
   FETCHED_LIST,
 } from './actions';
 
+/*this function run when FETCHED_LIST is dispatch,
+ second parameter of the function is the generator fuction run when FETCHED_LIST dispatch
+*/
+
 function* watchFetchList() {
   yield takeLatest(FETCHED_LIST, getListAsync);
 }
 
-function* getListAsync(acton) {
+function* getListAsync() {
   try {
     yield put(requestList());
     const data = yield call(
@@ -25,6 +29,12 @@ function* getListAsync(acton) {
     console.log(error);
   }
 }
+
+//
+
+/* RootSaga is the fuction where listner fuction is declared if 
+    the listner fuction is not declare then the generator function will not get called.
+*/
 
 export default function* homePageRootSaga() {
   yield all([watchFetchList()]);
