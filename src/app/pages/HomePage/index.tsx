@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useData } from './hooks';
 
 import reducer from './reducer';
 import saga from './saga';
 
 import { useInjectReducer, useInjectSaga } from 'redux-injectors';
+import DragAndDrop from 'app/components/DragAndDrop';
 
 export function HomePage() {
   const injectorkey = 'homepage';
@@ -15,7 +15,6 @@ export function HomePage() {
   useInjectSaga({ key: injectorkey, saga });
 
   const { list } = useData();
-
   return (
     <>
       <Helmet>
@@ -23,7 +22,7 @@ export function HomePage() {
 
         <meta name="description" content="A Boilerplate application homepage" />
       </Helmet>
-      <span>HomePage container</span>
+      <DragAndDrop list={list} />
     </>
   );
 }

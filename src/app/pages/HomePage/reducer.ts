@@ -10,7 +10,7 @@ const initialState = {
   loading: false,
 };
 
-const dndListReducer = (state = initialState, action) => {
+const HomePageReducer = (state = initialState, action) => {
   switch (action.type) {
     case REQUESTED_LIST:
       return {
@@ -21,7 +21,7 @@ const dndListReducer = (state = initialState, action) => {
     case REQUESTED_LIST_SUCCEEDED:
       return {
         ...state,
-        dndListReducer: action.payload || [],
+        dndListReducer: action.data || [],
         loading: false,
         error: false,
       };
@@ -37,4 +37,4 @@ const dndListReducer = (state = initialState, action) => {
   }
 };
 
-export default dndListReducer;
+export default HomePageReducer;

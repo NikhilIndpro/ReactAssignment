@@ -4,15 +4,17 @@
 
 import { combineReducers } from '@reduxjs/toolkit';
 
-import dndListReducer from '../app/pages/HomePage/reducer';
-
+import HomePageReducer from '../app/pages/HomePage/reducer';
+import DragAndDropReducer from '../app/components/DragAndDrop/reducer';
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
  */
 export function createReducer() {
   // Initially we don't have any injectedReducers, so returning identity function to avoid the error
   const comnbinedAppReducer = combineReducers({
-    dndListReducer,
+    HomePageReducer,
+
+    DragAndDropReducer,
   });
 
   const rootReducer = (state, action) => {

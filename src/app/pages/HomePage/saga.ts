@@ -1,10 +1,15 @@
 import api from '../../../api';
 import { all, call, put, takeLatest, takeEvery } from 'redux-saga/effects';
 
-import { requestListSuccess, requestListError, requestList } from './actions';
+import {
+  requestListSuccess,
+  requestListError,
+  requestList,
+  FETCHED_LIST,
+} from './actions';
 
 function* watchFetchList() {
-  yield takeLatest('FETCHED_LIST', getListAsync);
+  yield takeLatest(FETCHED_LIST, getListAsync);
 }
 
 function* getListAsync(acton) {
@@ -15,7 +20,6 @@ function* getListAsync(acton) {
       'https://jsonplaceholder.typicode.com/photos',
     );
     yield put(requestListSuccess(data));
-    console.log(data);
   } catch (error) {
     yield put(requestListError());
     console.log(error);

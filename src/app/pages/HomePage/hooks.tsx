@@ -1,15 +1,21 @@
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import { fetchLIst } from './actions';
 
 export const useData = () => {
+  const Item = useSelector(
+    (state: RootStateOrAny) => state.HomePageReducer.dndListReducer,
+  );
   const dispatch = useDispatch();
-  const [list, setList] = useState(0);
+  const [list, setList] = useState([]);
 
   useEffect(() => {
     dispatch(fetchLIst());
-    console.log('data');
   }, []);
+
+  useEffect(() => {
+    setList(Item.data);
+  }, [Item]);
 
   return {
     list,
