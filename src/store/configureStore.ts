@@ -32,6 +32,7 @@ export function configureAppStore() {
     middleware: getDefaultMiddleware => [
       ...getDefaultMiddleware({
         serializableCheck: false,
+        immutableCheck: false,
       }),
       ...middlewares,
     ],

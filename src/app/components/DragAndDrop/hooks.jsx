@@ -43,7 +43,6 @@ export const useTodo = props => {
       return;
     }
 
-    console.log(result);
 
     const listCopy = { ...elements };
     
