@@ -42,9 +42,13 @@ export const useTodo = props => {
     if (!result.destination) {
       return;
     }
+    const sourceId = result.source.droppableId;
 
+    const destinationId = result.destination.droppableId;
 
-    const listCopy = { ...elements };
+   if(sourceId !== destinationId){ 
+     
+     const listCopy = { ...elements };
     
     // removeFromList will provide the removed elements and updated list
 
@@ -56,8 +60,7 @@ export const useTodo = props => {
     );
 
     // Adding updated list to column with removed element
-    const sourceId = result.source.droppableId;
-
+     
     sourceUpdate(sourceId, dispatch, newSourceList);
 
      //Adding removed element to destination column with index 
@@ -70,10 +73,9 @@ export const useTodo = props => {
     );
 
     //Update destinationa list with removed element 
-    const destinationId = result.destination.droppableId;
-
+  
     destinationUpdate(destinationId, dispatch, listCopy);
-
+}
   };
 
   return {
