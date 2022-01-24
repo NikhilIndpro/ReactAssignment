@@ -1,18 +1,7 @@
 import { Droppable } from 'react-beautiful-dnd';
 import ListItem from './ListIteam';
 import React from 'react';
-import styled from 'styled-components';
-
-const ColumnHeader = styled.div`
-  text-transform: uppercase;
-  margin-bottom: 20px;
-`;
-
-const DroppableStyles = styled.div`
-  padding: 10px;
-  border-radius: 6px;
-  background: #d4d4d4;
-`;
+import { ColumnHeader, DroppableStyles } from './styles';
 
 const DraggableElement = ({ prefix, elements }) => {
   return (

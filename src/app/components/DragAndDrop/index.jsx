@@ -1,21 +1,9 @@
 /* eslint-disable prettier/prettier */
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import React from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import DraggableElement from './draggableElement';
 import {useTodo} from './hooks';
-
-const DragDropContextContainer = styled.div`
-  padding: 20px;
-  border: 4px solid indianred;
-  border-radius: 6px;
-`;
-
-const ListGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 8px;
-`;
+import { DragDropContextContainer, ListGrid  } from './styles'
 
 
 
