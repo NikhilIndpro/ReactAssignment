@@ -43,7 +43,7 @@ export const useTodo = props => {
   const lists = [TODO, IN_PROGRESS, DONE];
 
   const onDragEnd = result => {
-    console.log('onDragEnd', result);
+   
     if (!result.destination) {
       return;
     }
