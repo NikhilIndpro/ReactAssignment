@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTodos, setInprogress, setDone } from './actions';
 import { removeFromList, addToList } from './dragdropUtils';
@@ -25,6 +25,10 @@ export const useTodo = props => {
     done: getDone,
   });
 
+  const [even, setEven] = useState(false);
+  const [source, setSource] = useState({});
+  const [destination, setDestination] = useState({});
+  const [removedElement, setRemovedElement] = useState();
   useEffect(() => {
     if (Todos) {
       dispatch(setTodos(Todos));
@@ -39,18 +43,14 @@ export const useTodo = props => {
   const lists = [TODO, IN_PROGRESS, DONE];
 
   const onDragEnd = result => {
+    console.log('onDragEnd', result);
     if (!result.destination) {
       return;
     }
+    setDestination(result.destination);
+    setEven(true);
     const sourceId = result.source.droppableId;
-
-    const destinationId = result.destination.droppableId;
-
-   if(sourceId !== destinationId){ 
-     
-     const listCopy = { ...elements };
-    
-    // removeFromList will provide the removed elements and updated list
+    const listCopy = { ...elements };
 
     const sourceList = listCopy[result.source.droppableId];
 
@@ -58,30 +58,66 @@ export const useTodo = props => {
       sourceList,
       result.source.index,
     );
+    setRemovedElement(removedElement);
 
-    // Adding updated list to column with removed element
-     
     sourceUpdate(sourceId, dispatch, newSourceList);
+  };
 
-     //Adding removed element to destination column with index 
-    const destinationList  = listCopy[result.destination.droppableId];
+  const changeColumnAgree = () => {
+    const listCopy = { ...elements };
 
-    listCopy[result.destination.droppableId] = addToList(
+    const destinationId = destination.droppableId;
+
+    const destinationList = listCopy[destination.droppableId];
+
+    listCopy[destination.droppableId] = addToList(
       destinationList,
-      result.destination.index,
+      destination.index,
       removedElement,
     );
-
-    //Update destinationa list with removed element 
-  
     destinationUpdate(destinationId, dispatch, listCopy);
-}
+    setEven(false);
   };
+
+  const changeColumnDisagree = () => {
+    const listCopy = { ...elements };
+
+    const sourceId = source.droppableId;
+
+    const sourceList = listCopy[source.droppableId];
+
+    listCopy[source.droppableId] = addToList(
+      sourceList,
+      destination.index,
+      removedElement,
+    );
+    destinationUpdate(sourceId, dispatch, listCopy);
+    setEven(false);
+  };
+
+  const onBeforeCapture = result => {};
+
+  const onBeforeDragStart = result => {
+    setSource(result.source);
+  };
+
+  const onDragStart = result => {};
+
+  const onDragUpdate = result => {};
 
   return {
     onDragEnd,
     lists,
     elements,
+    onBeforeCapture,
+    onBeforeDragStart,
+    onDragStart,
+    onDragUpdate,
+    even,
+    setEven,
+
+    changeColumnAgree,
+    changeColumnDisagree,
   };
 };
 
