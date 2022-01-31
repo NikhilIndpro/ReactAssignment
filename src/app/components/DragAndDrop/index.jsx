@@ -2,17 +2,15 @@
 import React from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import DraggableElement from './draggableElement';
-import { useTodo } from './hooks';
+import { useDragAndDrop } from './hooks';
 import { DragDropContextContainer, ListGrid } from './styles';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const onDragTransition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
@@ -25,18 +23,16 @@ function DragList(props) {
     onBeforeDragStart,
     onDragStart,
     onDragUpdate,
-    even,
-    setEven,
-   
+    even, 
     changeColumnAgree,
-    changeColumnDisagree
-  } = useTodo(props);
+    changeColumnDisagree,
+  } = useDragAndDrop(props);
 
   return (
     <DragDropContextContainer>
        <Dialog
         open={even}
-        TransitionComponent={Transition}
+        TransitionComponent={onDragTransition}
         keepMounted
         aria-describedby="alert-dialog-slide-description"
       >

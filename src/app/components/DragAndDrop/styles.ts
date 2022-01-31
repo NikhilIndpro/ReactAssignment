@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const DragDropContextContainer = styled.div`
   padding: 20px;
-  border: 4px solid indianred;
   border-radius: 6px;
 `;
 

@@ -8,7 +8,7 @@ const TODO = 'todo';
 const IN_PROGRESS = 'inProgress';
 const DONE = 'done';
 
-export const useTodo = props => {
+export const useDragAndDrop = props => {
   const Todos = props.list ? props.list.filter(item => item.id <= 10) : [];
 
   const dispatch = useDispatch();
@@ -42,34 +42,48 @@ export const useTodo = props => {
 
   const lists = [TODO, IN_PROGRESS, DONE];
 
+  const listCopy = { ...elements };
+
+  const sourceId = source.droppableId;
+
+  const destinationId = destination.droppableId;
+
+  const sourceList = listCopy[source.droppableId];
+
+  const destinationList = listCopy[destination.droppableId];
   const onDragEnd = result => {
-   
     if (!result.destination) {
       return;
     }
-    setDestination(result.destination);
-    setEven(true);
-    const sourceId = result.source.droppableId;
-    const listCopy = { ...elements };
+    if (parseInt(result.draggableId) % 2 === 0) {
+      const [removedElement, newSourceList] = removeFromList(
+        sourceList,
+        result.source.index,
+      );
+      setRemovedElement(removedElement);
 
-    const sourceList = listCopy[result.source.droppableId];
+      sourceUpdate(sourceId, dispatch, newSourceList);
 
-    const [removedElement, newSourceList] = removeFromList(
-      sourceList,
-      result.source.index,
-    );
-    setRemovedElement(removedElement);
+      listCopy[destination.droppableId] = addToList(
+        destinationList,
+        destination.index,
+        removedElement,
+      );
+      destinationUpdate(destinationId, dispatch, listCopy);
+    } else {
+      setEven(true);
 
-    sourceUpdate(sourceId, dispatch, newSourceList);
+      const [removedElement, newSourceList] = removeFromList(
+        sourceList,
+        result.source.index,
+      );
+      setRemovedElement(removedElement);
+
+      sourceUpdate(sourceId, dispatch, newSourceList);
+    }
   };
 
   const changeColumnAgree = () => {
-    const listCopy = { ...elements };
-
-    const destinationId = destination.droppableId;
-
-    const destinationList = listCopy[destination.droppableId];
-
     listCopy[destination.droppableId] = addToList(
       destinationList,
       destination.index,
@@ -80,15 +94,9 @@ export const useTodo = props => {
   };
 
   const changeColumnDisagree = () => {
-    const listCopy = { ...elements };
-
-    const sourceId = source.droppableId;
-
-    const sourceList = listCopy[source.droppableId];
-
     listCopy[source.droppableId] = addToList(
       sourceList,
-      destination.index,
+      source.index,
       removedElement,
     );
     destinationUpdate(sourceId, dispatch, listCopy);
@@ -103,7 +111,12 @@ export const useTodo = props => {
 
   const onDragStart = result => {};
 
-  const onDragUpdate = result => {};
+  const onDragUpdate = result => {
+    if (!result.destination) {
+      return;
+    }
+    setDestination(result.destination);
+  };
 
   return {
     onDragEnd,
@@ -114,12 +127,13 @@ export const useTodo = props => {
     onDragStart,
     onDragUpdate,
     even,
-    setEven,
-
     changeColumnAgree,
     changeColumnDisagree,
   };
 };
+
+
+
 
 function destinationUpdate(id, dispatch, listCopy) {
   if (id === TODO) {
@@ -138,5 +152,31 @@ function sourceUpdate(id, dispatch, setUpdatedSource) {
     dispatch(setInprogress(setUpdatedSource));
   } else {
     dispatch(setDone(setUpdatedSource));
+  }
+}
+
+
+export const useFullScreenDilog = () => {
+   
+  const [fullScreen, setFullScreen] = useState(false);
+  const [dilogData, setDilogData] = useState({});
+  const [value, setValue] = useState(null);
+
+  const handleClickOpen = (data) => {
+    setFullScreen(true);
+    setDilogData(data)
+  };
+
+  const handleClose = () => {
+    setFullScreen(false);
+  };
+
+  return{
+    fullScreen,
+    handleClickOpen,
+    handleClose,
+    dilogData,
+    value,
+    setValue
   }
 }
