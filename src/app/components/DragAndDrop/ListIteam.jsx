@@ -5,22 +5,14 @@ import { useFullScreenDilog } from './hooks';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
-
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Slide from '@mui/material/Slide';
 import Box from '@mui/material/Box';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 const ListItem = ({ item, index }) => {
   const {
@@ -57,32 +49,37 @@ const ListItem = ({ item, index }) => {
         }}
       </Draggable>
       <Dialog
-        fullScreen
+        fullScreen={false}
+        maxWidth={'lg'}
         open={fullScreen}
         onClose={handleClose}
-        TransitionComponent={Transition}
       >
-        <AppBar sx={{ position: 'relative' }}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            ></IconButton>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Details
-            </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
-              Close
-            </Button>
-          </Toolbar>
-        </AppBar>
+        <DialogTitle>Details</DialogTitle>
         <DialogContent>
-          <Box sx={{ flexGrow: 1 }}>
+          <Box
+            noValidate
+            component="form"
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              m: 'auto',
+              width: 'fit-content',
+              height: '500',
+            }}
+          >
             <Grid container spacing={1}>
               <Grid item xs={4}>
-                <img alt="Remy Sharp" src={dilogData.thumbnailUrl} />
+                <Box
+                  component="img"
+                  sx={{
+                    height: 233,
+                    width: 165,
+                    borderRadius: 50,
+                    maxHeight: { xs: 233, md: 167 },
+                    maxWidth: { xs: 350, md: 250 },
+                  }}
+                  src={dilogData.thumbnailUrl}
+                />
               </Grid>
               <Grid item xs={4}>
                 <p>{dilogData.title}</p>
@@ -110,6 +107,9 @@ const ListItem = ({ item, index }) => {
             </Grid>
           </Box>
         </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Close</Button>
+        </DialogActions>
       </Dialog>
     </div>
   );

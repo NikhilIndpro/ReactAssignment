@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTodos, setInprogress, setDone } from './actions';
 import { removeFromList, addToList } from './dragdropUtils';
