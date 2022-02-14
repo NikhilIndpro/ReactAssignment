@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Droppable } from 'react-beautiful-dnd';
 import ListItem from './ListIteam';
 import React from 'react';
@@ -22,4 +23,4 @@ const DraggableElement = ({ prefix, elements }) => {
   );
 };
 
-export default DraggableElement;
+export default React.memo(DraggableElement);

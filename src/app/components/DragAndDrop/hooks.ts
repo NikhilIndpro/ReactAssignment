@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import { setTodos, setInprogress, setDone } from './actions';
 import { removeFromList, addToList } from './dragdropUtils';
 
@@ -13,11 +13,11 @@ export const useDragAndDrop = props => {
 
   const dispatch = useDispatch();
 
-  const getTodo = useSelector(state => state.DragAndDropReducer.Todo);
+  const getTodo = useSelector((state: RootStateOrAny) => state.DragAndDropReducer.Todo);
   const getInProgress = useSelector(
-    state => state.DragAndDropReducer.In_Progress,
+    (state: RootStateOrAny) => state.DragAndDropReducer.In_Progress,
   );
-  const getDone = useSelector(state => state.DragAndDropReducer.Done);
+  const getDone = useSelector((state:RootStateOrAny) => state.DragAndDropReducer.Done);
 
   const [elements, setElements] = useState({
     todo: getTodo,
@@ -25,10 +25,27 @@ export const useDragAndDrop = props => {
     done: getDone,
   });
 
-  const [even, setEven] = useState(false);
-  const [source, setSource] = useState({});
-  const [destination, setDestination] = useState({});
-  const [removedElement, setRemovedElement] = useState();
+  interface Source1 {
+  droppableId: any,
+  index: number,
+ }
+ interface Destination1  {
+  droppableId: any,
+  index: number,
+ }
+ interface RemovedElement1  {
+  albumId: number,
+  id: number,
+  thumbnailUrl: string,
+  title: string,
+  url:string,
+
+ }
+  
+  const [even, setEven] = useState<boolean>(false);
+  const [source, setSource] = useState<Source1>({} as  Source1);
+  const [destination, setDestination] = useState<Destination1>({} as  Destination1);
+  const [removedElement, setRemovedElement] = useState<RemovedElement1>({} as RemovedElement1);
   useEffect(() => {
     if (Todos) {
       dispatch(setTodos(Todos));
@@ -60,7 +77,7 @@ export const useDragAndDrop = props => {
         sourceList,
         result.source.index,
       );
-      setRemovedElement(removedElement);
+      setRemovedElement( removedElement as RemovedElement1);
 
       sourceUpdate(sourceId, dispatch, newSourceList);
 
@@ -77,7 +94,7 @@ export const useDragAndDrop = props => {
         sourceList,
         result.source.index,
       );
-      setRemovedElement(removedElement);
+      setRemovedElement(removedElement as RemovedElement1);
 
       sourceUpdate(sourceId, dispatch, newSourceList);
     }
@@ -107,6 +124,7 @@ export const useDragAndDrop = props => {
 
   const onBeforeDragStart = result => {
     setSource(result.source);
+    
   };
 
   const onDragStart = result => {};
@@ -132,9 +150,6 @@ export const useDragAndDrop = props => {
   };
 };
 
-
-
-
 function destinationUpdate(id, dispatch, listCopy) {
   if (id === TODO) {
     dispatch(setTodos(listCopy.todo));
@@ -155,28 +170,35 @@ function sourceUpdate(id, dispatch, setUpdatedSource) {
   }
 }
 
-
 export const useFullScreenDilog = () => {
-   
-  const [fullScreen, setFullScreen] = useState(false);
-  const [dilogData, setDilogData] = useState({});
+
+  interface DilogElement1  {
+    albumId: number,
+    id: number,
+    thumbnailUrl: string,
+    title: string,
+    url:string,
+  
+   }
+  const [fullScreen, setFullScreen] = useState<boolean>(false);
+  const [dilogData, setDilogData] = useState<DilogElement1>({} as DilogElement1);
   const [value, setValue] = useState(null);
 
-  const handleClickOpen = (data) => {
+  const handleClickOpen = data => {
     setFullScreen(true);
-    setDilogData(data)
+    setDilogData(data);
   };
 
   const handleClose = () => {
     setFullScreen(false);
   };
 
-  return{
+  return {
     fullScreen,
     handleClickOpen,
     handleClose,
     dilogData,
     value,
-    setValue
-  }
-}
+    setValue,
+  };
+};

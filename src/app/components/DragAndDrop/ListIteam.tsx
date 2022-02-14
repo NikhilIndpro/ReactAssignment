@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { Avatar, DragItem, CardHeader, CardFooter, Author } from './styles';
@@ -22,10 +23,11 @@ const ListItem = ({ item, index }) => {
     dilogData,
     value,
     setValue,
-  } = useFullScreenDilog(index);
+  } = useFullScreenDilog();
 
   return (
-    <div>
+    <>
+    <>
       <Draggable draggableId={`${item.id}`} index={index}>
         {(provided, snapshot) => {
           return (
@@ -48,6 +50,8 @@ const ListItem = ({ item, index }) => {
           );
         }}
       </Draggable>
+      </>
+      <>
       <Dialog
         fullScreen={false}
         maxWidth={'lg'}
@@ -111,8 +115,9 @@ const ListItem = ({ item, index }) => {
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
+    </>
   );
 };
 
-export default ListItem;
+export default React.memo(ListItem);
